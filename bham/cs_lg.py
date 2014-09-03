@@ -5,19 +5,29 @@ Brings in the CS building simulation environment from bham and uses ScitosA5.
 """
 
 import sys
-import subprocess 
+import subprocess
 import os
 import random
 
 from morse.builder import *
 from strands_sim.builder.robots import Scitosa5
+from strands_sim.builder.robots import HumanStrands
 from bham.builder.robots import Elevator
 from bham.add_objects import AddObjects
 
-robot = Scitosa5()
+robot = Scitosa5(with_cameras=Scitosa5.WITH_OPENNI)
 #robot = Scitosa5(with_cameras = Scitosa5.WITHOUT_DEPTHCAMS)
 robot.translate(x=3.75,y=-4.1, z=0.1)
 robot.rotate(z=-1.57)
+
+human=HumanStrands()
+human.use_world_camera()
+human.translate(x=4, y=-3.2, z=0.1)
+human.properties(Object = True)
+pose = Pose()
+human.append(pose)
+pose.add_stream('ros', method="morse.middleware.ros.pose.TFPublisher", frame_id='/world', child_frame_id="/human")
+pose.add_stream('ros', frame_id='/world')
 
 lift = Elevator()
 lift.translate(3.81419,2.51356,0)
