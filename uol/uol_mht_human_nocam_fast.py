@@ -20,18 +20,33 @@ robot = Scitosa5(with_cameras=Scitosa5.WITHOUT_CAMERAS)
 
 # tum_kitchen
 robot.translate(x=2.5, y=3.2, z=0.1)
-rpose = Pose()
-robot.append(rpose)
-rpose.add_stream('ros', method="morse.middleware.ros.pose.TFPublisher", frame_id='/world', child_frame_id="/robot")
+#rpose = Pose()
+#robot.append(rpose)
+#rpose.add_stream('ros', method="morse.middleware.ros.pose.TFPublisher", frame_id='/world', child_frame_id="/robot")
+#collision = Collision()
+#robot.append(collision)
+##collision.properties(collision_property="obstacle")
+#collision.add_stream('socket')
+#collision.translate(x = 0.2, z = 0.2)
 
 # Battery discharging rate, in percent per seconds
 # The bateery state is published to /battery
-robot.battery.properties(DischargingRate=1.0)
+#robot.battery.properties(DischargingRate=1.0)
 
 human=Human()
 human.use_world_camera()
 human.translate(x=4.5, y=3.2, z=0.1)
-human.properties(Object = True)
+#human.properties(Object = True)
+human.properties(obstacle=1)
+motion = MotionVW()
+human.append(motion)
+motion.properties(ControlType = 'Velocity')
+motion.add_stream('ros')
+collision = Collision()
+human.append(collision)
+#collision.properties(collision_property="obstacle")
+collision.add_stream('socket')
+collision.translate(x = 0.0, z = 1.5)
 
 pose = Pose()
 human.append(pose)

@@ -23,6 +23,10 @@ robot.translate(x=2.5, y=3.2, z=0.1)
 rpose = Pose()
 robot.append(rpose)
 rpose.add_stream('ros', method="morse.middleware.ros.pose.TFPublisher", frame_id='/world', child_frame_id="/robot")
+collision = Collision()
+robot.append(collision)
+collision.add_stream('socket')
+collision.translate(x = 0.2, z = 0.1)
 
 # Battery discharging rate, in percent per seconds
 # The bateery state is published to /battery
